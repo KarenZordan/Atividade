@@ -1,0 +1,56 @@
+// Funcao para calculo do abastecimento
+function fValorAbastecimento(litros, tipo) {
+    let valor;
+    if (tipo == 1) {
+        valor = litros * 5;
+    }
+    else {
+        if (tipo == 2) {
+            valor = litros * 7;
+        }
+    }
+    return valor;  
+}
+
+//Funcao para validacao dos litros
+function fLerLitros() {
+    let litros;
+    do {
+        if (litros != undefined) {
+            context.res.status.send('Valor informado é invalido! Digite um novo valor');
+        }
+        litros = context.res.status.send('Informe quantos litros');
+    } while (!Number(litros));
+    return litros;
+}
+
+//Funcao para validacao do tipo
+function fLerTipo() {
+    let tipo;
+    do {
+        if (tipo != undefined) {
+            context.res.status.send('Valor informado é invalido! Digite um novo valor');
+        }
+        tipo = context.res.status.send("Informe 1 para gasolina e 2 para alcool");
+    } while (!Number(tipo) || tipo < 1 || tipo > 2);
+    return tipo;
+}
+//alert(fValorAbastecimento(fLerLitros(), fLerTipo())); // para puxar no vs code
+
+//Rodar no azure
+module.exports = async function (context, req) {
+    let qtdLitros = Number(req.query.litros);
+    let tipoCombustivel = Number(req.query.tipo);
+    
+    if (isNaN(qtdLitros) || isNaN(tipoCombustivel)) {
+        return context.res.status.send('Formato de dados incorreto, os campos aceitam apenas numeros.');
+    }
+
+    let calcularValor = fValorAbastecimento(qtdLitros,tipoCombustivel);  
+
+    context.res.json({
+        quantidade: qtdLitros, 
+        tipo: tipoCombustivel, 
+        valor: calcularValor,
+    });
+}
