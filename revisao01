@@ -1,4 +1,4 @@
-// Funcao para calculo do abastecimento
+// Funcao para calculo do abastecimento = tipo 1 = alcool R$ 5,00 litro e tipo 2 = gasolina R$ 7,00 litro
 function fValorAbastecimento(litros, tipo) {
     let valor;
     if (tipo == 1) {
@@ -43,7 +43,7 @@ module.exports = async function (context, req) {
     let tipoCombustivel = Number(req.query.tipo);
     
     if (isNaN(qtdLitros) || isNaN(tipoCombustivel)) {
-        return context.res.status.send('Formato de dados incorreto, os campos aceitam apenas numeros.');
+        return context.res.status(400).send('Formato de dados incorreto, os campos aceitam apenas numeros');
     }
 
     let calcularValor = fValorAbastecimento(qtdLitros,tipoCombustivel);  
